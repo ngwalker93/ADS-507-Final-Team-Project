@@ -43,7 +43,7 @@ except Exception as e:
 # ============================================
 print("\n2. Downloading Drug Shortages dataset...")
 
-shortages_url = "https://download.open.fda.gov/drug/shortage/drug-shortage-0001-of-0001.json.zip"
+shortages_url = "https://download.open.fda.gov/drug/shortages/drug-shortages-0001-of-0001.json.zip"
 
 try:
     response = requests.get(shortages_url)
