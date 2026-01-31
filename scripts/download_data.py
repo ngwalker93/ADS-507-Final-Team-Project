@@ -43,17 +43,20 @@ except Exception as e:
 # ============================================
 print("\n2. Downloading Drug Shortages dataset...")
 
-shortages_url = "https://api.fda.gov/drug/drugsfda.json?search=openfda.product_type:\"HUMAN+PRESCRIPTION+DRUG\"+OR+openfda.product_type:\"HUMAN+OTC+DRUG\"&limit=1000"
+shortages_url = "https://download.open.fda.gov/drug/shortage/drug-shortage-0001-of-0001.json.zip"
 
 try:
     response = requests.get(shortages_url)
     response.raise_for_status()
     
-    # Save raw JSON
-    with open('data/drug_shortages_raw.json', 'w') as f:
-        json.dump(response.json(), f)
+    print("   Download complete. Extracting...")
     
-    print("   ✓ Drug Shortages dataset downloaded to data/")
+    # Extract zip file
+    zip_bytes = io.BytesIO(response.content)
+    with zipfile.ZipFile(zip_bytes) as z:
+        z.extractall("data")
+    
+    print("   ✓ Drug Shortages dataset downloaded and extracted to data/")
     
 except Exception as e:
     print(f"   ✗ Error downloading Drug Shortages dataset: {e}")
