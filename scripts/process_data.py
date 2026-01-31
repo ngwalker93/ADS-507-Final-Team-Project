@@ -74,37 +74,34 @@ try:
     df_shortages = pd.DataFrame(shortage_data['results'])
     print(f"   Loaded {len(df_shortages)} shortage records")
     
-    # Create core shortage table
-    shortage_core_columns = [
-        'ndc', 'generic_name', 'company_name', 'status',
-        'therapeutic_category', 'initial_posting_date', 'update_date',
-        'dosage_form', 'reason'
-    ]
-    
-    # Only keep columns that exist
-    available_shortage_columns = [col for col in shortage_core_columns if col in df_shortages.columns]
-    shortage_core = df_shortages[available_shortage_columns].copy()
-    
-    # Rename ndc to package_ndc for consistency
-    if 'ndc' in shortage_core.columns:
-        shortage_core.rename(columns={'ndc': 'package_ndc'}, inplace=True)
+    # Create core shortage table with fields that actually exist
+    shortage_core = pd.DataFrame({
+        'package_ndc': df_shortages.get('package_ndc'),
+        'generic_name': df_shortages.get('generic_name'),
+        'company_name': df_shortages.get('company_name'),
+        'status': df_shortages.get('status'),
+        'therapeutic_category': df_shortages.get('therapeutic_category'),
+        'initial_posting_date': df_shortages.get('initial_posting_date'),
+        'update_date': df_shortages.get('update_date'),
+        'dosage_form': df_shortages.get('presentation'),  # Use presentation field
+        'reason': None  # Not available in FDA data
+    })
     
     # Save core shortage table
     shortage_core.to_csv('data/drug_shortages_core.csv', index=False)
     print(f"   ✓ Created drug_shortages_core.csv ({len(shortage_core)} shortages)")
     
-    # Extract contact information if available
+    # Extract contact information
     contact_records = []
     for idx, row in df_shortages.iterrows():
-        package_ndc = row.get('ndc')
-        contacts = row.get('contacts', [])
+        package_ndc = row.get('package_ndc')
+        contact_info = row.get('contact_info')
         
-        if isinstance(contacts, list):
-            for contact in contacts:
-                contact_records.append({
-                    'package_ndc': package_ndc,
-                    'contact_info': str(contact)
-                })
+        if contact_info:
+            contact_records.append({
+                'package_ndc': package_ndc,
+                'contact_info': str(contact_info)
+            })
     
     if len(contact_records) > 0:
         shortage_contacts = pd.DataFrame(contact_records)
