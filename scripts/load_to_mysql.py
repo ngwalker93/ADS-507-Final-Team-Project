@@ -14,28 +14,29 @@ print("Starting data load to MySQL...")
 # ============================================
 
 # MySQL connection parameters
-# Update these with your actual MySQL credentials
-DB_USER = 'root'  # Change if different
-DB_PASSWORD = 'your_password'  # CHANGE THIS to your MySQL password
-DB_HOST = 'localhost'
-DB_PORT = '3306'
-DB_NAME = 'fda_shortage_db'
+# Read credienrials from environment variabels in Github actions
+DB_USER = os.getenv("DB_USER", "pipeline_user")
+DB_PASSWORD = os.getenv("DB_PASSWORD", "pipeline_password")
+DB_HOST = os.getenv("DB_HOST", "127.0.0.1")
+DB_PORT = os.getenv("DB_PORT", "3306")
+DB_NAME = os.getenv("DB_NAME", "fda_shortage_db")
 
 # Create connection string
-connection_string = f'mysql+mysqlconnector://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}'
-
+connection_string = (
+    f"mysql+mysqlconnector://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
+)
 try:
     # Create database engine
-    engine = create_engine(connection_string)
-    print(f"✓ Connected to MySQL database: {DB_NAME}")
+    engine = create_engine(connection_string,pool_pre_ping=True)
+    print(f"✓ Connected to MySQL database: {DB_NAME} at {DB_HOST}:{DB_PORT} as {DB_USER}")
     
 except Exception as e:
     print(f"✗ Error connecting to MySQL: {e}")
     print("\nTroubleshooting:")
-    print("1. Make sure MySQL is running")
-    print("2. Update DB_PASSWORD in this script")
-    print("3. Ensure database 'fda_shortage_db' exists (run 01_create_tables.sql first)")
-    exit(1)
+    print("1. Check DB_USER/DB_PASSWORD env vars in GitHub Actions")
+    print("2. Ensure MySQL server is running and accessible")
+    print("3. Confirm DB_HOST/DB_PORT match the workflow settings")
+    raise SystemExit(1)
 
 # ============================================
 # Load CSV Files into MySQL Tables
