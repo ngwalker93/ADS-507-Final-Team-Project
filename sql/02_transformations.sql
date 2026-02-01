@@ -53,9 +53,10 @@ LEFT JOIN raw_ndc n
     ON p.product_ndc = n.product_ndc;
 
 -- Add indexes for better query performance
-CREATE INDEX idx_status ON shortages_with_ndc(status(50));
-CREATE INDEX idx_company ON shortages_with_ndc(company_name(100));
-CREATE INDEX idx_product_ndc ON shortages_with_ndc(product_ndc(30));
+
+CREATE INDEX idx_status ON shortages_with_ndc(status);
+CREATE INDEX idx_company ON shortages_with_ndc(company_name);
+CREATE INDEX idx_product_ndc ON shortages_with_ndc(product_ndc);
 
 -- ============================================
 -- ANALYSIS VIEW 1: Current Package Shortages
