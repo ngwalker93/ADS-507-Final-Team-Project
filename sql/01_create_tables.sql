@@ -3,9 +3,7 @@
 -- Creates database structure for NDC and drug shortage data
 -- ============================================
 
--- Create database
-CREATE DATABASE IF NOT EXISTS fda_shortage_db;
-USE fda_shortage_db;
+
 
 -- Drop tables if they exist (for clean re-runs)
 DROP TABLE IF EXISTS shortage_contacts;
