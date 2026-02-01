@@ -14,7 +14,36 @@ USE fda_shortage_db;
 
 DROP TABLE IF EXISTS shortages_with_ndc;
 
-CREATE TABLE shortages_with_ndc AS
+--create table with columns from shortages and ndc tables
+CREATE TABLE shortages_with_ndc (
+  shortage_id BIGINT,
+  package_ndc VARCHAR(30),
+  shortage_generic_name TEXT,
+  company_name VARCHAR(255),
+  status VARCHAR(50),
+  therapeutic_category VARCHAR(100),
+  initial_posting_date VARCHAR(20),
+  update_date VARCHAR(20),
+  shortage_dosage_form VARCHAR(100),
+  reason TEXT,
+
+  product_ndc VARCHAR(20),
+  package_description TEXT,
+  package_marketing_start_date VARCHAR(20),
+
+  ndc_generic_name TEXT,
+  manufacturer VARCHAR(255),
+  brand_name VARCHAR(255),
+  finished BOOLEAN,
+  marketing_category VARCHAR(100),
+  ndc_dosage_form VARCHAR(100),
+  route TEXT,
+  product_type VARCHAR(100),
+  application_number VARCHAR(50)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--Insert joined data into the new table
+INSERT INTO shortages_with_ndc
 SELECT 
     -- Generate row ID
     ROW_NUMBER() OVER (ORDER BY s.package_ndc) as shortage_id,
@@ -62,7 +91,7 @@ CREATE INDEX idx_product_ndc ON shortages_with_ndc(product_ndc);
 -- ANALYSIS VIEW 1: Current Package Shortages
 -- Focus on currently active shortages at package level
 -- ============================================
-
+DROP VIEW IF EXISTS current_package_shortages;
 CREATE OR REPLACE VIEW current_package_shortages AS
 SELECT DISTINCT
     shortage_generic_name AS generic_name,
@@ -75,14 +104,14 @@ SELECT DISTINCT
     initial_posting_date,
     update_date
 FROM shortages_with_ndc
-WHERE status = 'Current'
-ORDER BY company_name, generic_name;
+WHERE status = 'Current';
+
 
 -- ============================================
 -- ANALYSIS VIEW 2: Multi-Package Shortage Products
 -- Identifies products with shortages affecting multiple packages
 -- ============================================
-
+DROP VIEW IF EXISTS multi_package_shortages;
 CREATE OR REPLACE VIEW multi_package_shortages AS
 SELECT 
     product_ndc,
@@ -92,14 +121,14 @@ SELECT
 FROM shortages_with_ndc
 WHERE product_ndc IS NOT NULL
 GROUP BY product_ndc, shortage_generic_name, company_name
-HAVING COUNT(DISTINCT package_ndc) > 1
-ORDER BY affected_packages DESC, company_name;
+HAVING COUNT(DISTINCT package_ndc) > 1;
+
 
 -- ============================================
 -- ANALYSIS VIEW 3: Manufacturer Risk Assessment
 -- Counts affected packages and products per manufacturer
 -- ============================================
-
+DROP VIEW IF EXISTS manufacturer_risk_analysis;
 CREATE OR REPLACE VIEW manufacturer_risk_analysis AS
 SELECT 
     company_name,
@@ -108,14 +137,14 @@ SELECT
     COUNT(DISTINCT CASE WHEN status = 'Current' THEN package_ndc END) AS current_shortage_packages
 FROM shortages_with_ndc
 WHERE company_name IS NOT NULL
-GROUP BY company_name
-ORDER BY affected_packages DESC;
+GROUP BY company_name;
+
 
 -- ============================================
 -- ANALYSIS VIEW 4: Current Manufacturer Risk
 -- Focus only on currently active shortages by manufacturer
 -- ============================================
-
+DROP VIEW IF EXISTS current_manufacturer_risk;
 CREATE OR REPLACE VIEW current_manufacturer_risk AS
 SELECT 
     company_name,
@@ -124,8 +153,8 @@ SELECT
 FROM shortages_with_ndc
 WHERE status = 'Current' 
     AND company_name IS NOT NULL
-GROUP BY company_name
-ORDER BY current_affected_packages DESC;
+GROUP BY company_name;
+
 
 -- ============================================
 -- Verification Queries
