@@ -1,3 +1,4 @@
+#Enables pipeline monitoring through CI status check
 #This file executes the monitoring process for FDA drug shortages automatically.
 #Purpose is to automate pipeline healthchecks and quality after each run and fails the 
 #pipeline if any issues are detected.
