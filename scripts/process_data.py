@@ -115,6 +115,7 @@ try:
                 })
     # Build active ingredients DataFrame
     ndc_active_ingredients = pd.DataFrame(active_rows).drop_duplicates()
+
     ndc_active_ingredients.to_csv("data/ndc_active_ingredients.csv", index=False)
     print(f"   ✓ Created ndc_active_ingredients.csv ({len(ndc_active_ingredients)} rows)")
 
@@ -158,6 +159,14 @@ try:
     # Extract results into DataFrame
     df_shortages = pd.DataFrame(shortage_data['results'])
     print(f"   Loaded {len(df_shortages)} shortage records")
+
+    # Convert date columns to ISO-8601 format for MySQL DATE compatibility
+    date_cols = ['discontinued_date', 'initial_posting_date', 'update_date']
+
+    for col in date_cols:
+        if col in df_shortages.columns:
+            dt = pd.to_datetime(df_shortages[col], format="%m/%d/%Y", errors="coerce")
+            df_shortages[col] = dt.dt.strftime("%Y-%m-%d").astype("string")
     
     # Create core shortage table with fields that actually exist
     shortage_core = pd.DataFrame({
