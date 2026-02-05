@@ -8,7 +8,10 @@ from pathlib import Path
 
 import pandas as pd
 from sqlalchemy import create_engine, text
+from dotenv import load_dotenv
 
+# Load environment variables from .env file (for local development)
+load_dotenv()
 
 print("Starting data load to MySQL...")
 
@@ -16,7 +19,7 @@ def get_engine():
     """Create a SQLAlchemy engine using environment variables."""
 
     # Fail fast if required vars are missing (recommended)
-    required = ["DB_USER", "DB_PASSWORD", "DB_NAME"]
+    required = ["DB_USER", "DB_PASSWORD", "DB_NAME", "DB_HOST", "DB_PORT"]
     missing = [v for v in required if not os.getenv(v)]
     if missing:
         raise RuntimeError(f"Missing required environment variables: {', '.join(missing)}")
