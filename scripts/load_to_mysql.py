@@ -47,6 +47,7 @@ def clear_tables(conn):
 
     # child tables first
     conn.execute(text("DELETE FROM raw_ndc_packaging;"))
+    conn.execute(text("DELETE FROM raw_ndc_active_ingredients;"))
     conn.execute(text("DELETE FROM shortage_contacts;"))
 
     # parent tables next
@@ -120,8 +121,8 @@ def main() -> None:
     csv_plan = [
         ("data/ndc_core.csv", "raw_ndc"),
         ("data/ndc_packaging.csv", "raw_ndc_packaging"),
+        ("data/ndc_active_ingredients.csv", "raw_ndc_active_ingredients"),
         ("data/drug_shortages_core.csv", "raw_drug_shortages"),
-        
     ]
     # Contacts require mapping (package_ndc -> shortage_id)
     contacts_csv = "data/shortage_contacts.csv"
