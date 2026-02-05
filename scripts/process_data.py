@@ -5,7 +5,6 @@ Cleans and normalizes the downloaded FDA datasets into structured CSV tables
 
 import pandas as pd
 import json
-import os
 
 print("Starting data processing...")
 
