@@ -3,11 +3,9 @@ FDA Data Download Script
 Downloads NDC and Drug Shortage datasets from FDA's official sources
 """
 
-import pandas as pd
 import requests
 import zipfile
 import io
-import json
 import os
 
 print("Starting FDA data download...")
