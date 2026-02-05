@@ -56,15 +56,15 @@ try:
             pkgs = row["packaging"]
             if not isinstance(pkgs, list):
                 continue
-        for pkg in pkgs:
-            packaging_rows.append({
-                "product_ndc": row["product_ndc"],
-                "package_ndc": (str(pkg.get("package_ndc")).strip() if pkg.get("package_ndc") is not None else None),
-                "description": pkg.get("description"),
-                "marketing_start_date": pkg.get("marketing_start_date"),
-                "marketing_end_date": pkg.get("marketing_end_date"),
-                "sample": pkg.get("sample"),
-            })
+            for pkg in pkgs:
+                packaging_rows.append({
+                    "product_ndc": row["product_ndc"],
+                    "package_ndc": (str(pkg.get("package_ndc")).strip() if pkg.get("package_ndc") is not None else None),
+                    "description": pkg.get("description"),
+                    "marketing_start_date": pkg.get("marketing_start_date"),
+                    "marketing_end_date": pkg.get("marketing_end_date"),
+                    "sample": pkg.get("sample"),
+                })
 
     # Build packaging DataFrame
     ndc_packaging = pd.DataFrame(packaging_rows)
