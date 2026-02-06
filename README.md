@@ -343,7 +343,7 @@ After completing all phases, verify:
 - [ ] `data/` folder contains 6 files (2 JSON, 4 CSV)
 - [ ] MySQL database `fda_shortage_db` exists
 - [ ] 4 raw tables contain data (check row counts in Workbench)
-- [ ] `shortages_with_ndc` table exists and has ~1,810 rows
+- [ ] `shortages_with_ndc` table exists
 - [ ] Match percentage is approximately 90%
 - [ ] 4 analysis views exist
 - [ ] Analysis queries return results (10+ Result tabs)
@@ -381,15 +381,17 @@ See `data/DATA_SOURCE.md` for detailed documentation.
 ## Project Results
 
 ### Data Pipeline Statistics
-- **128,805** drug products in NDC database (after deduplication)
-- **244,786** packaging records (after deduplication)
-- **1,810** drug shortage records (after deduplication)
+- **~128,805** drug products in NDC database (after deduplication)
+- **~244,786** packaging records (after deduplication)
+- **~1,810** drug shortage records (after deduplication)
 - **~90%** successful match rate (shortages matched with NDC data)
 - **1,810** enriched shortage records with full product details
 
+**Note:** Reported record counts and match rates may vary between runs because the FDA OpenFDA databases are updated regularly with new products, packaging changes, and shortage status updates, and this pipeline pulls live data at execution time.
+
 ### Key Insights Enabled by Data Join
 - Brand name vs generic drug shortage patterns
-- Product type analysis (prescription vs OTC vs bulk ingredients)
+- Product type analysis (finished prescription drugs vs drugs for further processing)
 - Route of administration vulnerability assessment
 - Package type distribution in shortages
 - Manufacturer portfolio risk analysis
@@ -404,6 +406,6 @@ Educational project for ADS-507 at University of San Diego
 
 ---
 
-**Last Updated:** February 1, 2026  
+**Last Updated:** February 6, 2026  
 **Pipeline Status:** Fully functional and tested on Windows 11  
 **Tested On:** Python 3.14.2, MySQL 8.0, Windows PowerShell
