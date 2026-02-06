@@ -28,7 +28,7 @@ SELECT
     s.initial_posting_date,
     s.update_date,
     s.dosage_form AS shortage_dosage_form,
-    s.reason,
+    COALESCE(s.reason, 'Reason not provided') AS reason,
     
     -- Packaging information
     p.product_ndc,
