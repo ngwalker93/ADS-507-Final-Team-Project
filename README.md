@@ -111,7 +111,7 @@ This installs: pandas, requests, mysql-connector-python, sqlalchemy, streamlit, 
 
 **Step 2: Run automated Python pipeline:**
 ```bash
-python run_pipeline.py
+python run_pipeline_mv.py
 ```
 This automates Phases 1, 2, and 4 (download → process → load)
 
