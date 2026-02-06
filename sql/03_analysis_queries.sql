@@ -54,9 +54,9 @@ FROM multi_package_shortages
 LIMIT 15;
 
 -- ============================================
--- QUERY 4: Prescription vs OTC Drug Shortage Duration
+-- QUERY 4: Product Type Shortage Duration Analysis
 -- Uses: product_type from NDC (NOT in shortage data)
--- Value: Shows if prescription drugs have longer shortage durations than OTC
+-- Value: Compares shortage durations between finished prescription drugs (ready for patients) and drugs requiring further processing (APIs, bulk ingredients)
 -- ============================================
 
 SELECT 
@@ -73,9 +73,9 @@ GROUP BY product_type
 ORDER BY current_shortages DESC;
 
 -- ============================================
--- QUERY 5: Package Size Distribution in Shortages
+-- QUERY 5: Package Type Distribution in Shortages
 -- Uses: package_description from packaging table (NOT in shortage data)
--- Value: Reveals which package sizes are most vulnerable to shortages
+-- Value: Reveals which package types (bottle, vial, blister pack, etc.) are most vulnerable to shortages
 -- ============================================
 
 SELECT 
