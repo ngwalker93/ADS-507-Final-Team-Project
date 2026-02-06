@@ -236,13 +236,16 @@ python scripts/load_to_mysql.py
 
 **Expected output:**
 ```
-raw_ndc: 128805 rows
-raw_ndc_packaging: 244786 rows
-raw_drug_shortages: 1810 rows
-shortage_contacts: 1810 rows
+raw_ndc: ~128,805 rows
+raw_ndc_packaging: ~244,786 rows
+raw_drug_shortages: ~1,810 rows
+shortage_contacts: ~1,810 rows
 ```
 
-**Time:** 1-3 minutes
+**Note:**  
+Row counts are approximate and may vary between runs. This pipeline pulls live data directly from the FDA OpenFDA APIs, which are updated regularly as new products are added, shortages are resolved, or records are corrected. The counts shown above reflect the dataset size as of the most recent successful pipeline run.
+
+**Time:** 1–3 minutes
 
 ---
 
