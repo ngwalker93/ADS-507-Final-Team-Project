@@ -16,7 +16,7 @@ print("Starting data load to MySQL...")
 # MySQL connection parameters
 # Update these with your actual MySQL credentials
 DB_USER = 'root'  # Change if different
-DB_PASSWORD = '5791216sS$'  # CHANGE THIS to your MySQL password
+DB_PASSWORD = 'YOUR PASSWORD'  # CHANGE THIS to your MySQL password
 DB_HOST = 'localhost'
 DB_PORT = '3306'
 DB_NAME = 'fda_shortage_db'
