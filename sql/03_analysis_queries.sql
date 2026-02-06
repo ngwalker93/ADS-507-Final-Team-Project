@@ -32,7 +32,7 @@ SELECT
     END AS drug_type,
     COUNT(*) AS shortage_count,
     COUNT(DISTINCT company_name) AS manufacturers_affected,
-    ROUND(AVG(DATEDIFF(CURDATE(), STR_TO_DATE(initial_posting_date, '%Y%m%d'))), 0) AS avg_days_in_shortage
+    ROUND(AVG(DATEDIFF(CURDATE(), STR_TO_DATE(initial_posting_date, '%m/%d/%Y'))), 0) AS avg_days_in_shortage
 FROM shortages_with_ndc
 WHERE status = 'Current'
     AND initial_posting_date IS NOT NULL
@@ -63,8 +63,8 @@ SELECT
     product_type,
     COUNT(*) AS current_shortages,
     COUNT(DISTINCT company_name) AS manufacturers,
-    ROUND(AVG(DATEDIFF(CURDATE(), STR_TO_DATE(initial_posting_date, '%Y%m%d'))), 0) AS avg_days_active,
-    MAX(DATEDIFF(CURDATE(), STR_TO_DATE(initial_posting_date, '%Y%m%d'))) AS longest_active_days
+    ROUND(AVG(DATEDIFF(CURDATE(), STR_TO_DATE(initial_posting_date, '%m/%d/%Y'))), 0) AS avg_days_active,
+    MAX(DATEDIFF(CURDATE(), STR_TO_DATE(initial_posting_date, '%m/%d/%Y'))) AS longest_active_days
 FROM shortages_with_ndc
 WHERE status = 'Current'
     AND product_type IS NOT NULL
@@ -181,7 +181,7 @@ SELECT
     package_description,
     product_type,
     initial_posting_date AS posted_date,
-    DATEDIFF(CURDATE(), STR_TO_DATE(initial_posting_date, '%Y%m%d')) AS days_active
+    DATEDIFF(CURDATE(), STR_TO_DATE(initial_posting_date, '%m/%d/%Y')) AS days_active
 FROM shortages_with_ndc
 WHERE status = 'Current'
     AND product_ndc IS NOT NULL
