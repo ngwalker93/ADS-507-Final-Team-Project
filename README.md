@@ -215,21 +215,19 @@ Then:
 
 ### **Phase 4: Load Data into MySQL**
 
-**IMPORTANT:** Before running, update database credentials in `scripts/load_to_mysql.py`:
+**IMPORTANT:** Database credentials are **not hardcoded** in the script.  
+You will be prompted to enter your MySQL password securely at runtime.
 
-Open the file and change line ~18:
-```python
-DB_USER = 'root'              # Your MySQL username
-DB_PASSWORD = 'your_password' # CHANGE THIS to your MySQL password!
-```
+Before running, open `scripts/load_to_mysql.py` only to **confirm your MySQL username** (default is `root`). No password changes are required in the file.
 
 Then run:
 ```bash
 python scripts/load_to_mysql.py
 ```
+When prompted, enter your MySQL password in the terminal. The password will not be displayed or stored.
 
 **What it does:**
-- Connects to MySQL database
+- Connects to MySQL database using runtime-entered credentials
 - Loads CSV files into corresponding tables
 - Uses `if_exists='append'` to avoid foreign key conflicts
 - Verifies row counts
@@ -303,12 +301,17 @@ Open **MySQL Workbench** and run:
 
 ### **Phase 7: Run Interactive Dashboard**
 
-**IMPORTANT:** Update database password in `scripts/dashboard.py`
+**IMPORTANT:** Database credentials are **not hardcoded** in the dashboard script.  
+You will be prompted to enter your MySQL password securely at runtime when the dashboard starts.
+
+Before running, open `scripts/dashboard.py` only to **confirm your MySQL username** (default is `root`). No password changes are required in the file.
 
 Then run:
 ```bash
 python -m streamlit run scripts/dashboard.py
 ```
+
+When prompted, enter your MySQL password in the terminal. The password will not be displayed or stored.
 
 **What it does:**
 - Launches interactive web dashboard
