@@ -30,7 +30,7 @@ def get_database_connection():
     
     # Database credentials - UPDATE THESE
     DB_USER = 'root'
-    DB_PASSWORD = '5791216sS$'  # CHANGE THIS!
+    DB_PASSWORD = 'YOUR PASSWORD'  # CHANGE THIS!
     DB_HOST = 'localhost'
     DB_PORT = '3306'
     DB_NAME = 'fda_shortage_db'
