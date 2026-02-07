@@ -9,6 +9,7 @@ from pathlib import Path
 import pandas as pd
 from sqlalchemy import create_engine, text
 from dotenv import load_dotenv
+from sqlalchemy.exc import ProgrammingError
 
 # Load environment variables from .env file (for local development)
 load_dotenv()
@@ -35,20 +36,31 @@ def require_file(path):
 
 def clear_tables(conn):
     """
-    Remove existing rows without dropping tables.
-    This function disables foreign key checks to allow truncation
-    of child tables before parent tables.
+    Clear existing rows without dropping tables.
+    - Disables FK checks temporarily
+    - Truncates (fast) when tables exist
+    - Skips tables that don't exist yet (first-run friendly)
     """
+    def truncate_if_exists(table_name: str):
+        try:
+            conn.execute(text(f"TRUNCATE TABLE `{table_name}`;"))
+            print(f"  Truncated {table_name}")
+        except ProgrammingError as e:
+            # MySQL error 1146 = table doesn't exist
+            if "1146" in str(e):
+                print(f"  Skipping {table_name} (table not found)")
+            else:
+                raise
+
     conn.execute(text("SET FOREIGN_KEY_CHECKS = 0;"))
 
     # child tables first
-    conn.execute(text("DELETE FROM raw_ndc_packaging;"))
-    conn.execute(text("DELETE FROM raw_ndc_active_ingredients;"))
-    conn.execute(text("DELETE FROM shortage_contacts;"))
+    for t in ["raw_ndc_packaging", "raw_ndc_active_ingredients", "shortage_contacts"]:
+        truncate_if_exists(t)
 
     # parent tables next
-    conn.execute(text("DELETE FROM raw_ndc;"))
-    conn.execute(text("DELETE FROM raw_drug_shortages;"))
+    for t in ["raw_ndc", "raw_drug_shortages"]:
+        truncate_if_exists(t)
 
     conn.execute(text("SET FOREIGN_KEY_CHECKS = 1;"))
 
