@@ -11,6 +11,7 @@ DROP TABLE IF EXISTS shortages_with_ndc;
 DROP TABLE IF EXISTS raw_drug_shortages;
 DROP TABLE IF EXISTS raw_ndc_packaging;
 DROP TABLE IF EXISTS raw_ndc;
+DROP TABLE IF EXISTS raw_ndc_active_ingredients;
 
 -- ============================================
 -- Table 1: Raw NDC Product Data
@@ -27,10 +28,12 @@ CREATE TABLE raw_ndc (
     route TEXT,
     product_type VARCHAR(150),
     marketing_start_date VARCHAR(20),
+    marketing_end_date VARCHAR(20),
     application_number VARCHAR(50),
     INDEX idx_labeler (labeler_name(255)),
     INDEX idx_brand (brand_name(255))
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
 
 -- ============================================
 -- Table 2: NDC Packaging Information
@@ -41,6 +44,8 @@ CREATE TABLE raw_ndc_packaging (
     product_ndc VARCHAR(20),
     description TEXT,
     marketing_start_date VARCHAR(20),
+    marketing_end_date VARCHAR(20),
+    sample TINYINT(1),
     FOREIGN KEY (product_ndc) REFERENCES raw_ndc(product_ndc)
         ON DELETE CASCADE
         ON UPDATE CASCADE,
@@ -81,6 +86,22 @@ CREATE TABLE shortage_contacts (
         ON DELETE CASCADE
         ON UPDATE CASCADE,
     INDEX idx_shortage_id (shortage_id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- ============================================
+-- Table 5: Active Ingredients (Optional Enhancement)
+-- Normalized active ingredient info separated from main shortage data
+-- ============================================
+
+CREATE TABLE raw_ndc_active_ingredients (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    product_ndc VARCHAR(20),
+    name TEXT,
+    strength VARCHAR(255),
+    FOREIGN KEY (product_ndc) REFERENCES raw_ndc(product_ndc)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE,
+    INDEX idx_product_ndc (product_ndc)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- ============================================
