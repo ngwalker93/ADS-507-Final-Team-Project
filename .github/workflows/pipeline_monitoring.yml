@@ -22,24 +22,24 @@ jobs:
       mysql:
         image: mysql:8.0
         env:
-          MYSQL_ROOT_PASSWORD: ${{ secrets.MYSQL_ROOT_PASSWORD }}
-          MYSQL_DATABASE: ${{ secrets.MYSQL_DATABASE }}
-          MYSQL_USER: ${{ secrets.MYSQL_USER }}
-          MYSQL_PASSWORD: ${{ secrets.MYSQL_PASSWORD }}
+          MYSQL_ROOT_PASSWORD: rootpassword
+          MYSQL_DATABASE: fda_shortage_db
+          MYSQL_USER: pipeline_user
+          MYSQL_PASSWORD: pipeline_password
         ports:
           - 3306:3306
         options: >-
-          --health-cmd="mysqladmin ping -h 127.0.0.1 -p${{ secrets.MYSQL_ROOT_PASSWORD }}"
+          --health-cmd="mysqladmin ping -h 127.0.0.1 -prootpassword"
           --health-interval=10s
           --health-timeout=5s
           --health-retries=30
 
     env:
-      DB_USER: ${{ secrets.DB_USER }}
-      DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+      DB_USER: pipeline_user
+      DB_PASSWORD: pipeline_password
       DB_HOST: 127.0.0.1
       DB_PORT: "3306"
-      DB_NAME: ${{ secrets.DB_NAME }}
+      DB_NAME: fda_shortage_db
       
 
     steps:

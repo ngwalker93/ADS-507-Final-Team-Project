@@ -29,12 +29,12 @@ st.set_page_config(
 def get_database_connection():
     """Create cached database connection"""
     
-    # Database credentials - UPDATE THESE AS NEEDED
-    DB_USER = os.getenv("DB_USER")
-    DB_PASSWORD = os.getenv("DB_PASSWORD")
-    DB_HOST = os.getenv("DB_HOST", "localhost")
-    DB_PORT = os.getenv("DB_PORT", "3306")
-    DB_NAME = os.getenv("DB_NAME")
+    # Database credentials - UPDATE THESE
+    DB_USER = 'root'
+    DB_PASSWORD = 'rootpassword'  # CHANGE THIS!
+    DB_HOST = 'localhost'
+    DB_PORT = '3306'
+    DB_NAME = 'fda_shortage_db'
     
     connection_string = f'mysql+mysqlconnector://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}'
     

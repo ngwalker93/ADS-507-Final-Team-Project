@@ -17,18 +17,11 @@ print("Starting data load to MySQL...")
 
 def get_engine():
     """Create a SQLAlchemy engine using environment variables."""
-
-    # Fail fast if required vars are missing (recommended)
-    required = ["DB_USER", "DB_PASSWORD", "DB_NAME", "DB_HOST", "DB_PORT"]
-    missing = [v for v in required if not os.getenv(v)]
-    if missing:
-        raise RuntimeError(f"Missing required environment variables: {', '.join(missing)}")
-
-    user = os.getenv("DB_USER")                 
-    password = os.getenv("DB_PASSWORD")         
-    host = os.getenv("DB_HOST", "127.0.0.1")    
-    port = os.getenv("DB_PORT", "3306")         
-    db = os.getenv("DB_NAME")                   
+    user = os.getenv("DB_USER", "pipeline_user")
+    password = os.getenv("DB_PASSWORD", "pipeline_password")
+    host = os.getenv("DB_HOST", "127.0.0.1")
+    port = os.getenv("DB_PORT", "3306")
+    db = os.getenv("DB_NAME", "fda_shortage_db")
 
     conn_str = f"mysql+mysqlconnector://{user}:{password}@{host}:{port}/{db}"
     return create_engine(conn_str, pool_pre_ping=True)

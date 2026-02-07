@@ -17,6 +17,7 @@ build/
 
 # Environment
 .env
+.env.local
 .venv
 venv/
 env/
@@ -34,3 +35,11 @@ Thumbs.db
 
 # Jupyter Notebook
 .ipynb_checkpoints/
+
+# Database
+*.db
+*.sqlite3
+
+# Other sensitive files
+config_local.py
+secrets/

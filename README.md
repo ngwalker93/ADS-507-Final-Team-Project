@@ -50,12 +50,7 @@ Before running the pipeline, ensure you have:
    - Download: https://dev.mysql.com/downloads/
 
 3. **Git** (for cloning repository)
-   - Download: https://git-scm.com/downloads
-     
-4. **Local Environment Configuration**
-  - Copy `.env.example` to `.env` in the project root
-  - Update the database credentials in `.env` for your local setup
-  - Default development credentials are provided in the example file
+   - Download: https://git-scm.com/downloads     
 
 ---
 

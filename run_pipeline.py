@@ -7,12 +7,13 @@
 import os
 import subprocess
 import sys
+from dotenv import load_dotenv
 
+load_dotenv()
 
 def run(cmd, use_shell=False):
     print(f"Running: {cmd}")
     subprocess.run(cmd, shell=use_shell, check=True)
-
 
 def main():
     try:
