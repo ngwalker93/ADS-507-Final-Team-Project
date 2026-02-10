@@ -121,7 +121,6 @@ def load_shortage_contacts(conn, csv_path: str) -> int:
     )
     return len(out)
 
-
 def main() -> None:
     print("Starting data load to MySQL (pipeline-safe)...")
 
